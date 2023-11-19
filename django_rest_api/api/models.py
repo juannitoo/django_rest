@@ -3,7 +3,6 @@ import uuid
 from mptt.models import MPTTModel, TreeForeignKey
 
 # Create your models here.
-# https://blog.mathieu-leplatre.info/django-selectrelated-manytomany.html
 class Category(MPTTModel):
 
     #uuid pas bon pour la clarté !
@@ -17,7 +16,7 @@ class Category(MPTTModel):
 
     # Alors les trees je n'en avais jamais entendu parler, une sorte de graph ou d'index j'ai l'impression
     # j'ai donc pris rendez-vous avec la notice de django-mptt !
-    parent = TreeForeignKey("self", on_delete=models.PROTECT, null=True, blank=True, related_name="children")
+    parent = TreeForeignKey("self", on_delete=models.SET_NULL, null=True, blank=True, related_name="children")
 
     class Meta:
         ordering = ["name"]
@@ -31,7 +30,6 @@ class Category(MPTTModel):
 
 class Equipment(models.Model):
 
-    # id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="Created date")
     date_updated = models.DateTimeField(auto_now=True, verbose_name="Updated date")
 
@@ -41,7 +39,6 @@ class Equipment(models.Model):
     quantity = models.PositiveBigIntegerField(null=False, default=0, verbose_name="Quantity")
 
     categories = models.ManyToManyField("Category", related_name="categories", verbose_name="categories")
-    #  on_delete=models.PROTECT, 
 
     class Meta:
         ordering = ["name"]

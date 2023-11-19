@@ -83,19 +83,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write(self.style.MIGRATE_HEADING(self.help))
 
-        Category.objects.all().delete()
-        Equipment.objects.all().delete()
+        c = Category.objects.all().delete()
+        e = Equipment.objects.all().delete()
 
         machine = Category.objects.create(
             name="Machines",
             description="tous types de machines",
             slug="machines",
-        )
-
-        test = Category.objects.create(
-            name="test",
-            description="test pour évaluer filtre parent",
-            slug="test",
         )
 
         for cat in CATEGORIES:
