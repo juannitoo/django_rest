@@ -3,9 +3,10 @@ import uuid
 from mptt.models import MPTTModel, TreeForeignKey
 
 # Create your models here.
-# class Category(models.Model):
+# https://blog.mathieu-leplatre.info/django-selectrelated-manytomany.html
 class Category(MPTTModel):
 
+    #uuid pas bon pour la clarté !
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="Created date")
     date_updated = models.DateTimeField(auto_now=True, verbose_name="Updated date")
@@ -15,14 +16,15 @@ class Category(MPTTModel):
     slug = models.SlugField(default="", null=False, verbose_name="Slug")
 
     # Alors les trees je n'en avais jamais entendu parler, une sorte de graph ou d'index j'ai l'impression
-    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+    # j'ai donc pris rendez-vous avec la notice de django-mptt !
+    parent = TreeForeignKey("self", on_delete=models.CASCADE, null=True, blank=True, related_name="children")
     #models.PROTECT ?
 
     class Meta:
         ordering = ["name"]
     
     class MPTTMeta:
-        order_insertion_by = ['name']
+        order_insertion_by = ["name"]
 
     def __str__(self):
         return self.name
@@ -39,7 +41,7 @@ class Equipment(models.Model):
     quantity = models.PositiveBigIntegerField(null=False, default=0, verbose_name="Quantity")
     slug = models.SlugField(default="", null=False, verbose_name="Slug")
 
-    categories = models.ManyToManyField('Category', related_name='categories')
+    categories = models.ManyToManyField("Category", related_name="categories", verbose_name="categories")
     # on_delete à gérér
 
     class Meta:

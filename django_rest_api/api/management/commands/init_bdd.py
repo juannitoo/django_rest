@@ -14,15 +14,29 @@ CATEGORIES = [
             {
                 'name': 'Perceuse',
                 'description' : "Perceuse à percussion Hilti 2500w",
-                'quantity' : 10,
+                'quantity' : 20,
+                'slug': 'perceuse-percussion',
+                'categories': ['Outils'],
+            },
+            {
+                'name': 'Perceuse sans fil',
+                'description' : "Perceuse sans fil Hilti 1000w",
+                'quantity' : 20,
                 'slug': 'perceuse-percussion',
                 'categories': ['Outils'],
             },
             {
                 'name': 'Visseuse',
-                'description' : "Visseuse sans fil Hilti 1500w",
-                'quantity' : 10,
+                'description' : "Visseuse sans fil Hilti 1000w",
+                'quantity' : 15,
                 'slug': 'visseuse-sans-fil',
+                'categories': ['Outils'],
+            },
+            {
+                'name': 'Meuleuse',
+                'description' : "Meuleuse Hilti 1500w",
+                'quantity' : 5,
+                'slug': 'meuleuse',
                 'categories': ['Outils'],
             },
         ]
@@ -43,7 +57,7 @@ CATEGORIES = [
             {
                 'name': 'Betonnière',
                 'description' : "betonnière electrique Hilti",
-                'quantity' : 2,
+                'quantity' : 5,
                 'slug': 'betonniere-electrique',
                 'categories': ['Engins'],
             },
@@ -78,6 +92,12 @@ class Command(BaseCommand):
             slug="machines",
         )
 
+        test = Category.objects.create(
+            name="test",
+            description="test pour évaluer filtre parent",
+            slug="test",
+        )
+
         for cat in CATEGORIES:
             category = Category.objects.create(
                 name=cat['name'],
@@ -96,7 +116,7 @@ class Command(BaseCommand):
                 equipement.save()
 
 
-        UserModel.objects.create_superuser(ADMIN_ID, ADMIN_MAIL, ADMIN_PASSWORD)
+        # UserModel.objects.create_superuser(ADMIN_ID, ADMIN_MAIL, ADMIN_PASSWORD)
 
         self.stdout.write(self.style.SUCCESS("All Done !"))
 

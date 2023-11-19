@@ -18,9 +18,19 @@ from django.contrib import admin
 from django.urls import path, reverse_lazy
 from django.conf.urls import include
 from django.views.generic.base import RedirectView
+from rest_framework import routers
+
+from api.views import CategoryViewset, EquipmentViewset
+
+router = routers.SimpleRouter()
+router.register('category', CategoryViewset, basename='category')
+router.register('equipment', EquipmentViewset, basename='equipment')
 
 urlpatterns = [
     path('', RedirectView.as_view(url=reverse_lazy('admin:index'))),
     path("admin/", admin.site.urls),
-    path('api-auth/', include('rest_framework.urls'))
+    path('api-auth/', include('rest_framework.urls')),
+    # path('api/category/', CategoryAPIView.as_view()),
+    # path('api/equipment/', EquipmentAPIView.as_view()),
+    path('api/', include(router.urls))
 ]
