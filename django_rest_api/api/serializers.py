@@ -4,11 +4,17 @@ from api.models import Category, Equipment
 
  
 class CategoryListSerializer(serializers.ModelSerializer):
+    """
+    Category list serializer
+    """
     class Meta:
         model = Category
         fields = ['id', 'name', 'description']
 
 class CategoryDetailsSerializer(serializers.ModelSerializer):
+    """
+    Category details serializer
+    """
     class Meta:
         model = Category
         fields = ['id', 'name', 'description', 'parent', 'slug']
@@ -19,15 +25,24 @@ class CategoryDetailsSerializer(serializers.ModelSerializer):
     # def validate_description(self, value):
     #     if len(value) == 0:
     #         raise serializers.ValidationError('description vide')
-    #     return value    
+    #     return value
+    # 
+    # def validate(self, data):
+    #   return data    
 
 
 class EquipmentListSerializer(ModelSerializer):
+    """
+    Equipement list serializer
+    """
     class Meta:
         model = Equipment
         fields = ['id', 'name', 'description']
 
 class EquipmentDetailsSerializer(ModelSerializer):
+    """
+    Equipement details serializer
+    """
     class Meta:
         model = Equipment
         fields = ['id', 'name', 'description', 'quantity', 'slug', 'categories']

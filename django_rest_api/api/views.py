@@ -9,18 +9,27 @@ from api.serializers import EquipmentListSerializer, EquipmentDetailsSerializer
 
 
 class StandardResultsSetPagination(PageNumberPagination):
+    """
+    Pagination's parameters
+    """
     page_size = 30
     page_size_query_param = 'page_size'
     max_page_size = 100
 
 
 class CategoryViewset(ModelViewSet):
+    """
+    Retrieve and use category's data
+    """
     serializer_class = CategoryListSerializer
     details_serializer_class = CategoryDetailsSerializer
     pagination_class = StandardResultsSetPagination
     permission_classes = [IsAuthenticated]
  
     def get_queryset(self):
+        """
+        Category CRUD endpoints and url filters
+        """
         queryset = Category.objects.all()
         filters = {}
         try :
@@ -32,13 +41,20 @@ class CategoryViewset(ModelViewSet):
         return queryset.filter(**filters).distinct()
     
     def get_serializer_class(self):
+        """
+        Decide which serailizer is used
+        """
         # get:retrieve get:list patch:partial_update  put:update  post:create  delete:destroy
         if self.action in ['retrieve', 'partial_update', 'update', 'create', 'destroy']:
             return self.details_serializer_class
         return super().get_serializer_class()
 
     def destroy(self, request, *args, **kwargs):
+        """
+        Override the delete method to lock it if category has child
+        """
         categorie = self.get_object()
+        message = {}
         if len(Equipment.objects.filter(categories=categorie)) == 0:
             categorie.delete()
             message = {'message': 'Catégory deleted'}
@@ -48,12 +64,18 @@ class CategoryViewset(ModelViewSet):
 
 
 class EquipmentViewset(ModelViewSet):
+    """
+    Retrieve and use equipment's data
+    """
     serializer_class = EquipmentListSerializer
     details_serializer_class = EquipmentDetailsSerializer
     pagination_class = StandardResultsSetPagination
     permission_classes = [IsAuthenticated]
  
     def get_queryset(self):
+        """
+        Equipment CRUD endpoints and url filters
+        """
         queryset = Equipment.objects.all()
         filters = {}
         try :
@@ -83,10 +105,10 @@ class EquipmentViewset(ModelViewSet):
         return queryset.filter(**filters).distinct()
     
     def get_serializer_class(self):
-        # get:retrieve get:list patch:partial_update  put:update  post:create destroy:delete get:list
-        print(self.action)
+        """
+        Decide which serailizer is used
+        """
         if self.action in ['retrieve', 'partial_update', 'update', 'create', 'destroy']:
-            return self.details_serializer_class
-        
+            return self.details_serializer_class       
         return super().get_serializer_class()
     
