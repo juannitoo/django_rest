@@ -19,22 +19,6 @@ class CategoryViewset(ModelViewSet):
     details_serializer_class = CategoryDetailsSerializer
     pagination_class = StandardResultsSetPagination
     permission_classes = [IsAuthenticated]
-    # filtres parent (simple)       
-        # {
-        #     "id": 14,
-        #     "name": "Machines",
-        #     "description": "tous types de machines"
-        # },
-        # {
-        #     "id": 16,
-        #     "name": "Engins",
-        #     "description": "Machines de chantier"
-        # },
-        # {
-        #     "id": 15,
-        #     "name": "Outils",
-        #     "description": "Outils portatifs manuels"
-        # }
  
     def get_queryset(self):
         queryset = Category.objects.all()
@@ -67,7 +51,7 @@ class EquipmentViewset(ModelViewSet):
     serializer_class = EquipmentListSerializer
     details_serializer_class = EquipmentDetailsSerializer
     pagination_class = StandardResultsSetPagination
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
  
     def get_queryset(self):
         queryset = Equipment.objects.all()
