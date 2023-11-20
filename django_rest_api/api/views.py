@@ -1,6 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
  
 from api.models import Category, Equipment
 from api.serializers import CategoryListSerializer, CategoryDetailsSerializer
@@ -17,6 +18,7 @@ class CategoryViewset(ModelViewSet):
     serializer_class = CategoryListSerializer
     details_serializer_class = CategoryDetailsSerializer
     pagination_class = StandardResultsSetPagination
+    permission_classes = [IsAuthenticated]
     # filtres parent (simple)       
         # {
         #     "id": 14,
@@ -65,6 +67,7 @@ class EquipmentViewset(ModelViewSet):
     serializer_class = EquipmentListSerializer
     details_serializer_class = EquipmentDetailsSerializer
     pagination_class = StandardResultsSetPagination
+    # permission_classes = [IsAuthenticated]
  
     def get_queryset(self):
         queryset = Equipment.objects.all()

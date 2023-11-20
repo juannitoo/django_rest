@@ -22,6 +22,11 @@ from rest_framework import routers
 
 from api.views import CategoryViewset, EquipmentViewset
 
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
 router = routers.SimpleRouter()
 router.register('category', CategoryViewset, basename='category')
 router.register('equipment', EquipmentViewset, basename='equipment')
@@ -30,7 +35,7 @@ urlpatterns = [
     path('', RedirectView.as_view(url=reverse_lazy('admin:index'))),
     path("admin/", admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
-    # path('api/category/', CategoryAPIView.as_view()),
-    # path('api/equipment/', EquipmentAPIView.as_view()),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/', include(router.urls))
 ]
