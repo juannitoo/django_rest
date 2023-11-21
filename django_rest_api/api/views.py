@@ -1,3 +1,5 @@
+from django.core.serializers import serialize
+import json
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
@@ -26,6 +28,7 @@ class CategoryViewset(ModelViewSet):
     pagination_class = StandardResultsSetPagination
     permission_classes = [IsAuthenticated]
  
+
     def get_queryset(self):
         """
         Category CRUD endpoints and url filters
@@ -40,6 +43,7 @@ class CategoryViewset(ModelViewSet):
             print(f'fail category queryset filters : {e}')
         return queryset.filter(**filters).distinct()
     
+
     def get_serializer_class(self):
         """
         Decide which serailizer is used
@@ -48,6 +52,7 @@ class CategoryViewset(ModelViewSet):
         if self.action in ['retrieve', 'partial_update', 'update', 'create', 'destroy']:
             return self.details_serializer_class
         return super().get_serializer_class()
+
 
     def destroy(self, request, *args, **kwargs):
         """
@@ -63,6 +68,8 @@ class CategoryViewset(ModelViewSet):
         return Response(message)
 
 
+
+
 class EquipmentViewset(ModelViewSet):
     """
     Retrieve and use equipment's data
@@ -71,7 +78,9 @@ class EquipmentViewset(ModelViewSet):
     details_serializer_class = EquipmentDetailsSerializer
     pagination_class = StandardResultsSetPagination
     permission_classes = [IsAuthenticated]
+    lookup_url_kwarg = "id"
  
+
     def get_queryset(self):
         """
         Equipment CRUD endpoints and url filters
@@ -104,11 +113,59 @@ class EquipmentViewset(ModelViewSet):
 
         return queryset.filter(**filters).distinct()
     
+
     def get_serializer_class(self):
         """
-        Decide which serailizer is used
+        Decide which serializer is used
         """
         if self.action in ['retrieve', 'partial_update', 'update', 'create', 'destroy']:
-            return self.details_serializer_class       
+            return self.details_serializer_class   
         return super().get_serializer_class()
     
+
+    def create(self, request, *args, **kwargs):
+        try:
+            data = request.data
+            equipment = Equipment.objects.create(
+                name=data['name'],
+                slug=data['slug'],
+                description=data['description'],
+                quantity=data['quantity'],
+            )
+            equipment.categories.add(data['categories'])
+            equipment.save()
+            serialized_data = serialize("json", Equipment.objects.filter(id=equipment.id))
+            serialized_data = json.loads(serialized_data)
+            return Response({'queryset': serialized_data}, status=201)
+        except Exception as e:
+            print("exception create:", e)
+            return Response({'queryset': "fail"}, status=400)
+
+
+    def update(self, request, *args, **kwargs):
+        try : 
+            id = self.kwargs.get(self.lookup_url_kwarg)
+            data = request.data
+            equipment = Equipment.objects.get(id=id)
+            equipment.name=data['name']
+            equipment.slug=data['slug']
+            equipment.description=data['description']
+            equipment.quantity=data['quantity']
+            cat = data['categories']
+            if Category.objects.get(id=cat) not in [ x for x in equipment.categories.all() ]:
+                equipment.categories.add(Category.objects.get(id=cat))
+                equipment.save()
+            else : 
+                equipment.categories.remove(Category.objects.get(id=cat))
+                equipment.save()
+            serialized_data = serialize("json", Equipment.objects.filter(id=id))
+            serialized_data = json.loads(serialized_data)
+            return Response({'queryset': serialized_data}, status=200)
+        except Exception as e:
+            print("exception update:", e)
+            return Response({'queryset': "fail"}, status=400)
+
+
+    def partial_update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return super().update(request, *args, **kwargs)

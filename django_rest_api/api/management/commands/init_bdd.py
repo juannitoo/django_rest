@@ -74,7 +74,7 @@ CATEGORIES = [
 
 ADMIN_ID = 'admin'
 ADMIN_PASSWORD = 'nautilux'
-ADMIN_MAIL = 'jeanbalangue@hotmail.fr'
+ADMIN_MAIL = 'xx@hxx.fr'
 
 class Command(BaseCommand):
 
@@ -83,8 +83,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write(self.style.MIGRATE_HEADING(self.help))
 
-        c = Category.objects.all().delete()
-        e = Equipment.objects.all().delete()
+        Category.objects.all().delete()
+        Equipment.objects.all().delete()
 
         machine = Category.objects.create(
             name="Machines",
@@ -93,7 +93,7 @@ class Command(BaseCommand):
         )
 
         for cat in CATEGORIES:
-            category = Category.objects.create(
+            Category.objects.create(
                 name=cat['name'],
                 description=cat['description'],
                 slug=cat['slug'],
@@ -110,7 +110,7 @@ class Command(BaseCommand):
                 equipement.save()
 
 
-        # UserModel.objects.create_superuser(ADMIN_ID, ADMIN_MAIL, ADMIN_PASSWORD)
+        UserModel.objects.create_superuser(ADMIN_ID, ADMIN_MAIL, ADMIN_PASSWORD)
 
         self.stdout.write(self.style.SUCCESS("All Done !"))
 

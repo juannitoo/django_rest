@@ -16,9 +16,11 @@ python manage.py init_db ==> pour peupler la base de données
 ##### Back
 
 C'est ma première utilisation de Django-rest.  
-Je n'ai jamais fait de tests unitaires en Python.  
+Je n'ai jamais fait de tests unitaires en Python donc ceux sont mes premiers et ce ne fût pas simple !  
+Ca me semble étonnant de ne pas avoir à stocker le refreshtoken dans la base, mais comme mon access token se rafraichit, je laisse tel quel : TokenRefreshView.as_view() de simpleJWT  
 Je ne connaissais pas les Trees du modèle.  
-Les traductions des champs du modèle ne fonctionnent pas tous dans l'admin comme "quantity" qui n'est pas traduit alors que "name" est bien traduit.  
+Patch sur equipment.categories ne fontionne pas alors que sur equipment.name oui. Je ne comprends pas.  
+Les traductions des champs du modèle ne fonctionnent pas toutes dans l'admin comme "quantity" qui n'est pas traduit alors que "name" est bien traduit. Ca non plus je ne comprends pas !  
 [https://docs.djangoproject.com/fr/3.2/topics/i18n/translation/](https://docs.djangoproject.com/fr/3.2/topics/i18n/translation/)
 J'ai pourtant mis en place ce que j'ai pu trouver dans la notice.
 
@@ -42,4 +44,4 @@ class MyThing(models.Model):
 
 ##### Front
 
-Il n'y en a pas, je ne connais rien de react, et comme j'ai du apprendre django-rest (vite vite), j'ai préféré me focalisé là dessus.
+Il n'y en a pas, je ne connais rien de react, et comme j'ai dû apprendre django-rest (vite, trop vite), j'ai préféré me focaliser là dessus pour la suite de mes aventures. Il manquerait au moins django-cors pour le cross-origin j'imagine.

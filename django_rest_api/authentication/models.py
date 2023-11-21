@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 # https://openclassrooms.com/fr/courses/7192426-allez-plus-loin-avec-le-framework-django/7386368-personnalisez-le-modele-utilisateur
 # ces champs sont induit via l'hériatge de abstractuser
@@ -14,3 +15,7 @@ from django.db import models
 
 class User(AbstractUser):
     pass
+
+# class Token(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user", verbose_name=_("user"))
+#     refresh_token = models.CharField(max_length=255, null=False, blank=False, verbose_name=_("refresh-token"))
