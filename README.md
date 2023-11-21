@@ -2,14 +2,14 @@
 
 ### Setup
 
-git clone  
-python -m venv env ==> dans le dossier cloné pour créer un environnement virtuel pour le projet  
-source env/bin/activate ==> pour activer l'environnement depuis la racine du projet.  
-pip install -r requirements.txt ==> pour installer les dépendances nécessaires.  
-cd django_rest_api/  
-python manage.py migrate ==> pour initialiser la base de données  
-renseigner le superUser de la BDD dans api/management/commands/init_db.py  
-python manage.py init_db ==> pour peupler la base de données
+1. git clone git@github.com:juannitoo/django_rest.git
+2. python -m venv env ==> dans le dossier cloné pour créer un environnement virtuel pour le projet
+3. source env/bin/activate ==> pour activer l'environnement depuis la racine du projet.
+4. pip install -r requirements.txt ==> pour installer les dépendances nécessaires.
+5. cd django_rest_api/
+6. python manage.py migrate ==> pour initialiser la base de données
+7. renseigner le superUser de la BDD dans api/management/commands/init_db.py
+8. python manage.py init_db ==> pour peupler la base de données
 
 ### A savoir
 
